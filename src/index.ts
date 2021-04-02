@@ -22,6 +22,22 @@ async function getTimeEntries() {
 }
 
 async function setSlackStatus(status_text: string) {
+  let profile: any = {
+    status_text,
+  };
+
+  const regExp = new RegExp(/(?<status_emoji>:[a-zA-Z]+:)/);
+
+  const status_emoji: string | undefined = status_text.match(regExp)?.groups
+    ?.status_emoji;
+
+  if (status_emoji) {
+    profile = {
+      status_text: status_text.replace(regExp, '').trim(),
+      status_emoji,
+    };
+  }
+
   await fetch('https://slack.com/api/users.profile.set', {
     method: 'POST',
     headers: {
@@ -29,9 +45,7 @@ async function setSlackStatus(status_text: string) {
       Authorization: `Bearer ${config.slackToken}`,
     },
     body: JSON.stringify({
-      profile: {
-        status_text,
-      },
+      profile,
     }),
   }).then((res) => res.json());
 }
