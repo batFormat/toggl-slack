@@ -39,7 +39,9 @@ async function setSlackStatus(status_text: string) {
     };
   }
 
-  await fetch('https://slack.com/api/users.profile.set', {
+  console.log('profile: ', JSON.stringify({ profile }));
+
+  const response = await fetch('https://slack.com/api/users.profile.set', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
@@ -49,6 +51,8 @@ async function setSlackStatus(status_text: string) {
       profile,
     }),
   }).then((res) => res.json());
+
+  console.log('slack response: ', JSON.stringify({ response }));
 }
 
 export const handler = router({
