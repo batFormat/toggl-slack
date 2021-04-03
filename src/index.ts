@@ -26,7 +26,7 @@ async function setSlackStatus(status_text: string) {
     status_text,
   };
 
-  const regExp = new RegExp(/(?<status_emoji>:[a-zA-Z]+:)/);
+  const regExp = new RegExp(/(?<status_emoji>:[a-z_A-Z]+:)/);
 
   const status_emoji: string | undefined = status_text.match(regExp)?.groups
     ?.status_emoji;
