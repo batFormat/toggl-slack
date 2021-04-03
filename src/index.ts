@@ -35,7 +35,6 @@ async function setSlackStatus(status_text: string) {
     profile = {
       status_text: status_text.replace(regExp, '').trim(),
       status_emoji,
-      status_expiration: new Date().setMinutes(new Date().getMinutes() + 5),
     };
   }
 
