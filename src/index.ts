@@ -27,16 +27,18 @@ async function setSlackStatus(status_text: string) {
     status_emoji: '',
   };
 
-  const regExp = new RegExp(/(?<status_emoji>:[a-z_A-Z]+:)/);
+  if (status_text) {
+    const regExp = new RegExp(/(?<status_emoji>:[a-z_A-Z]+:)/);
 
-  const status_emoji: string | undefined = status_text.match(regExp)?.groups
-    ?.status_emoji;
+    const status_emoji: string | undefined = status_text.match(regExp)?.groups
+      ?.status_emoji;
 
-  if (status_emoji) {
-    profile = {
-      status_text: status_text.replace(regExp, '').trim(),
-      status_emoji,
-    };
+    if (status_emoji) {
+      profile = {
+        status_text: status_text.replace(regExp, '').trim(),
+        status_emoji,
+      };
+    }
   }
 
   console.log('profile: ', JSON.stringify({ profile }));
