@@ -23,7 +23,8 @@ async function getTimeEntries() {
 
 async function setSlackStatus(status_text: string) {
   let profile: any = {
-    status_text,
+    status_text: status_text ?? '',
+    status_emoji: '',
   };
 
   const regExp = new RegExp(/(?<status_emoji>:[a-z_A-Z]+:)/);
@@ -60,10 +61,7 @@ export const handler = router({
       triggerId: [config.cloudTriggerId],
       handler: async () => {
         const workDescription = await getTimeEntries();
-
-        if (workDescription) {
-          await setSlackStatus(workDescription);
-        }
+        await setSlackStatus(workDescription);
 
         return {
           statusCode: 200,
