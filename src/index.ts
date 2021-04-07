@@ -22,23 +22,24 @@ async function getTimeEntries() {
 }
 
 async function setSlackStatus(status_text: string) {
+  const timestamp = new Date();
+  timestamp.setMinutes(timestamp.getMinutes() + 2);
+
   let profile: any = {
-    status_text: status_text ?? '',
-    status_emoji: '',
+    status_text,
+    status_expiration: timestamp.getTime(),
   };
 
-  if (status_text) {
-    const regExp = new RegExp(/(?<status_emoji>:[a-z_A-Z]+:)/);
+  const regExp = new RegExp(/(?<status_emoji>:[a-z_A-Z]+:)/);
 
-    const status_emoji: string | undefined = status_text.match(regExp)?.groups
-      ?.status_emoji;
+  const status_emoji: string | undefined = status_text.match(regExp)?.groups
+    ?.status_emoji;
 
-    if (status_emoji) {
-      profile = {
-        status_text: status_text.replace(regExp, '').trim(),
-        status_emoji,
-      };
-    }
+  if (status_emoji) {
+    profile = {
+      status_text: status_text.replace(regExp, '').trim(),
+      status_emoji,
+    };
   }
 
   console.log('profile: ', JSON.stringify({ profile }));
@@ -63,7 +64,10 @@ export const handler = router({
       triggerId: [config.cloudTriggerId],
       handler: async () => {
         const workDescription = await getTimeEntries();
-        await setSlackStatus(workDescription);
+
+        if (workDescription) {
+          await setSlackStatus(workDescription);
+        }
 
         return {
           statusCode: 200,
