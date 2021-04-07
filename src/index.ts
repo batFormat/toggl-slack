@@ -37,6 +37,7 @@ async function setSlackStatus(status_text: string) {
 
   if (status_emoji) {
     profile = {
+      ...profile,
       status_text: status_text.replace(regExp, '').trim(),
       status_emoji,
     };
