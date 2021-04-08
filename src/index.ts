@@ -27,7 +27,7 @@ async function setSlackStatus(status_text: string) {
 
   let profile: any = {
     status_text,
-    status_expiration: timestamp.getTime(),
+    status_expiration: timestamp.getTime() / 1000,
   };
 
   const regExp = new RegExp(/(?<status_emoji>:[a-z_A-Z]+:)/);
