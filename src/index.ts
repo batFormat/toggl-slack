@@ -32,8 +32,8 @@ async function setSlackStatus(status_text: string) {
 
   const regExp = new RegExp(/(?<status_emoji>:[a-z_A-Z]+:)/);
 
-  const status_emoji: string | undefined = status_text.match(regExp)?.groups
-    ?.status_emoji;
+  const status_emoji: string | undefined =
+    status_text.match(regExp)?.groups?.status_emoji;
 
   if (status_emoji) {
     profile = {
@@ -43,9 +43,12 @@ async function setSlackStatus(status_text: string) {
     };
   }
 
-  console.log('profile: ', JSON.stringify({ profile }));
+  updateProfile(profile);
+  disableSnooze();
+}
 
-  const response = await fetch('https://slack.com/api/users.profile.set', {
+async function updateProfile(profile: any) {
+  await fetch('https://slack.com/api/users.profile.set', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
@@ -54,9 +57,17 @@ async function setSlackStatus(status_text: string) {
     body: JSON.stringify({
       profile,
     }),
-  }).then((res) => res.json());
+  });
+}
 
-  console.log('slack response: ', JSON.stringify({ response }));
+async function disableSnooze() {
+  await fetch('https://slack.com/api/dnd.endSnooze', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Bearer ${config.slackToken}`,
+    },
+  });
 }
 
 export const handler = router({
