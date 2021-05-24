@@ -43,8 +43,8 @@ async function setSlackStatus(status_text: string) {
     };
   }
 
-  updateProfile(profile);
-  disableSnooze();
+  await updateProfile(profile);
+  await disableSnooze();
 }
 
 async function updateProfile(profile: any) {
