@@ -43,8 +43,8 @@ async function setSlackStatus(status_text: string) {
     };
   }
 
-  await updateProfile(profile);
-  await disableSnooze();
+  updateProfile(profile);
+  disableSnooze();
 }
 
 async function updateProfile(profile: any) {
@@ -61,15 +61,13 @@ async function updateProfile(profile: any) {
 }
 
 async function disableSnooze() {
-  const response = await fetch('https://slack.com/api/dnd.endSnooze', {
+  await fetch('https://slack.com/api/dnd.endDnd', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       Authorization: `Bearer ${config.slackToken}`,
     },
-  }).then((res) => res.json());
-
-  console.log(response);
+  });
 }
 
 export const handler = router({
