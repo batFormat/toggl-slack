@@ -44,7 +44,7 @@ async function setSlackStatus(status_text: string) {
   }
 
   updateProfile(profile);
-  disableSnooze();
+  disableDnd();
 }
 
 async function updateProfile(profile: any) {
@@ -60,7 +60,7 @@ async function updateProfile(profile: any) {
   });
 }
 
-async function disableSnooze() {
+async function disableDnd() {
   await fetch('https://slack.com/api/dnd.endDnd', {
     method: 'POST',
     headers: {
